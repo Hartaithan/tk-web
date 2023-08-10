@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import IconLogo from "@/icons/Logo";
-import { Page } from "@/models/PageModel";
+import IconLogo from "@/icons/logo";
+import { Page } from "@/models/page";
 
 interface LoginSearchParams {
   phone?: string;

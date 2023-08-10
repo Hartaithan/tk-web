@@ -1,5 +1,5 @@
 import { FC } from "react";
-import IconLogo from "@/icons/Logo";
+import IconLogo from "@/icons/logo";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { privacyPolicy, userAgreement } from "@/constants/links";

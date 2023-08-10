@@ -1,4 +1,4 @@
-import { IconProps } from "@/models/IconModel";
+import { IconProps } from "@/models/icon";
 import { FC } from "react";
 
 const IconLogo: FC<IconProps> = ({ ...rest }) => {
