@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, Ref } from "react";
+import { FC, Ref, useTransition } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { privacyPolicy, userAgreement } from "@/constants/links";
@@ -18,14 +18,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import { Input } from "../ui/input";
 import { useIMask } from "react-imask";
-
-// const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
+import { RegisterPayload } from "@/models/auth";
+import { register } from "@/actions/register";
 
 const schema = z.object({
   phone: z.string().min(18, "Заполните поле"),
 });
 
 const RegisterForm: FC = () => {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof schema>>({
     defaultValues: { phone: "" },
     reValidateMode: "onSubmit",
@@ -37,9 +38,20 @@ const RegisterForm: FC = () => {
     { onAccept: (value) => form.setValue("phone", value) },
   );
 
-  const onSubmit = form.handleSubmit((data) => {
-    const unmasked = data.phone.replace(/[^\d]/g, "").slice(1);
-    console.log("unmasked", unmasked);
+  const onSubmit = form.handleSubmit(async (values) => {
+    const unmasked = values.phone.replace(/[^0-9+]/g, "");
+    const payload: RegisterPayload = {
+      national: "+7",
+      phone: unmasked,
+    };
+    startTransition(async () => {
+      const res = await register(payload);
+      if (res.status === 200) {
+        console.log("success", res.data);
+      } else {
+        console.log("fail", res);
+      }
+    });
   });
 
   return (
@@ -84,7 +96,7 @@ const RegisterForm: FC = () => {
           </Link>
         </p>
         <Button className="w-full max-w-sm" type="submit">
-          Далее
+          {isPending ? "Загрузка..." : "Далее"}
         </Button>
       </form>
     </Form>
