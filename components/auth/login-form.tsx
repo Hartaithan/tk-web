@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
+import CodeSubmit from "./code-submit";
 
 interface LoginFormProps {
   searchParams: LoginSearchParams;
@@ -42,6 +43,10 @@ const LoginForm: FC<LoginFormProps> = (props) => {
     const value = e.target.value.trim();
     form.setValue("code", value);
     if (value.length === 4) e.target.form?.requestSubmit();
+  };
+
+  const handleCodeSubmit = (): void => {
+    console.log("submit code again");
   };
 
   return (
@@ -73,11 +78,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
             </FormItem>
           )}
         />
-        <Button
-          className="no-underline text-gray-400 font-normal mb-4"
-          variant="link">
-          Отправить код повторно через 30 сек
-        </Button>
+        <CodeSubmit type="button" onCodeSubmit={handleCodeSubmit} />
       </form>
     </Form>
   );
