@@ -20,6 +20,7 @@ import { Input } from "../ui/input";
 import { useIMask } from "react-imask";
 import { RegisterPayload } from "@/models/auth";
 import { register } from "@/actions/register";
+import { Loader2 } from "lucide-react";
 
 const schema = z.object({
   phone: z.string().min(18, "Заполните поле"),
@@ -73,6 +74,7 @@ const RegisterForm: FC = () => {
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                   ref={ref as Ref<HTMLInputElement>}
+                  disabled={isPending}
                 />
               </FormControl>
               <FormMessage />
@@ -95,7 +97,8 @@ const RegisterForm: FC = () => {
             политику конфиденциальности
           </Link>
         </p>
-        <Button className="w-full max-w-sm" type="submit">
+        <Button className="w-full max-w-sm" type="submit" disabled={isPending}>
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isPending ? "Загрузка..." : "Далее"}
         </Button>
       </form>
