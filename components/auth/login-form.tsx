@@ -1,0 +1,86 @@
+"use client";
+
+import { ChangeEventHandler, FC, LegacyRef, useRef } from "react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { LoginSearchParams } from "@/models/auth";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { cn } from "@/lib/utils";
+
+interface LoginFormProps {
+  searchParams: LoginSearchParams;
+}
+
+const schema = z.object({
+  code: z.string().length(4, "Введите код"),
+});
+
+const LoginForm: FC<LoginFormProps> = (props) => {
+  const { searchParams } = props;
+
+  const form = useForm<z.infer<typeof schema>>({
+    defaultValues: { code: "" },
+    reValidateMode: "onSubmit",
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = form.handleSubmit(async (values) => {
+    console.log("values", values);
+  });
+
+  const handleCodeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const value = e.target.value.trim();
+    form.setValue("code", value);
+    if (value.length === 4) e.target.form?.requestSubmit();
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={onSubmit}>
+        <p className="max-w-xs mb-4 text-center">
+          {searchParams.phone
+            ? `Введите код из СМС, отправленный на номер ${searchParams.phone}`
+            : "Введите код из СМС, отправленный на ваш номер"}
+        </p>
+        <FormField
+          control={form.control}
+          name="code"
+          render={({ field, fieldState }) => (
+            <FormItem className="mb-1">
+              <FormLabel>Код подтверждения</FormLabel>
+              <FormControl>
+                <Input
+                  className={cn(
+                    fieldState.error && "border-2 border-destructive",
+                  )}
+                  placeholder="Введите код подтверждения"
+                  {...field}
+                  onChange={handleCodeChange}
+                  maxLength={4}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button
+          className="no-underline text-gray-400 font-normal mb-4"
+          variant="link">
+          Отправить код повторно через 30 сек
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+export default LoginForm;
