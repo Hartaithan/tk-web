@@ -21,12 +21,14 @@ import { useIMask } from "react-imask";
 import { RegisterPayload } from "@/models/auth";
 import { register } from "@/actions/register";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   phone: z.string().min(18, "Заполните поле"),
 });
 
 const RegisterForm: FC = () => {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof schema>>({
     defaultValues: { phone: "" },
@@ -48,6 +50,7 @@ const RegisterForm: FC = () => {
     startTransition(async () => {
       const res = await register(payload);
       if (res.status === 200) {
+        router.push("/login?phone=" + unmasked);
         console.log("success", res.data);
       } else {
         console.log("fail", res);

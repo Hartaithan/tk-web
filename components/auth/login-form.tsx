@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, FC, LegacyRef, useRef } from "react";
+import { ChangeEventHandler, FC } from "react";
 import {
   Form,
   FormControl,
@@ -11,7 +11,6 @@ import {
 } from "../ui/form";
 import { LoginSearchParams } from "@/models/auth";
 import { Input } from "../ui/input";
-import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
