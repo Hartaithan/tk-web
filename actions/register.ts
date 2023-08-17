@@ -18,7 +18,7 @@ interface FailedResponse {
 type Response = Action<200, SuccessfulResponse> | Action<400, FailedResponse>;
 
 export const register = async (payload: RegisterPayload): Promise<Response> => {
-  const response = await fetch(API_URL + "/auth/Account/register-phone", {
+  const response = await fetch(`${API_URL}/auth/Account/register-phone`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: baseHeaders,

@@ -16,7 +16,7 @@ const CodeSubmit: FC<CodeSubmitProps> = (props) => {
   useEffect(() => {
     startCountdown();
     return () => stopCountdown();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Button

@@ -85,7 +85,7 @@ const RegisterForm: FC = () => {
           )}
         />
         <p className="max-w-sm mb-4 text-sm text-center">
-          Нажимая кнопку "Далее", вы принимаете&nbsp;
+          Нажимая кнопку &quot;Далее&quot;, вы принимаете&nbsp;
           <Link
             className="text-primary underline"
             href={userAgreement}
