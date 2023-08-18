@@ -50,7 +50,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit}>
+      <form className="max-w-sm" onSubmit={onSubmit}>
         <p className="max-w-xs mb-4 text-center">
           {searchParams.phone
             ? `Введите код из СМС, отправленный на номер ${searchParams.phone}`

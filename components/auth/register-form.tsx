@@ -51,16 +51,16 @@ const RegisterForm: FC = () => {
       const res = await register(payload);
       if (res.status === 200) {
         router.push("/login?phone=" + unmasked);
-        console.log("success", res.data);
       } else {
-        console.log("fail", res);
+        const message = res.data?.message || "Неизвестная ошибка";
+        form.setError("phone", { message });
       }
     });
   });
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit}>
+      <form className="max-w-sm" onSubmit={onSubmit}>
         <FormField
           control={form.control}
           name="phone"
