@@ -18,13 +18,22 @@ interface FailedResponse {
 type Response = Action<200, SuccessfulResponse> | Action<400, FailedResponse>;
 
 export const register = async (payload: RegisterPayload): Promise<Response> => {
-  const response = await fetch(`${API_URL}/auth/Account/register-phone`, {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: baseHeaders,
-    cache: "no-cache",
-  });
-  const data = await response.json();
-  if (!response.ok) return { status: 400, data };
-  return { status: 200, data };
+  try {
+    const response = await fetch(`${API_URL}/auth/Account/register-phone`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: baseHeaders,
+      cache: "no-cache",
+    });
+    const data = await response.json();
+    if (!response.ok) return { status: 400, data };
+    return { status: 200, data };
+  } catch (error) {
+    return {
+      status: 400,
+      data: {
+        message: "Неизвестная ошибка",
+      },
+    };
+  }
 };
