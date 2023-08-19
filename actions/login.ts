@@ -1,5 +1,6 @@
 "use server";
 
+import { encodeLoginForm } from "@/lib/form";
 import { baseHeaders } from "@/lib/headers";
 import { Action } from "@/models/action";
 import { LoginPayload } from "@/models/auth";
@@ -24,15 +25,10 @@ type Response = Action<200, SuccessfulResponse> | Action<400, FailedResponse>;
 
 export const login = async (payload: LoginPayload): Promise<Response> => {
   try {
-    const body = new URLSearchParams({
-      ...payload,
-      grant_type: "phone",
-      resource: "TransportCard",
-      scope: "openid profile roles offline_access",
-    });
+    const encoded = encodeLoginForm(payload);
     const response = await fetch(`${API_URL}/auth/Account/login`, {
       method: "POST",
-      body: body.toString(),
+      body: encoded,
       headers: {
         ...baseHeaders,
         Accept: "*/*",
