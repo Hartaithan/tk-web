@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, FC } from "react";
+import { ChangeEventHandler, FC, useTransition } from "react";
 import {
   Form,
   FormControl,
@@ -9,24 +9,29 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { LoginSearchParams } from "@/models/auth";
+import { LoginPayload, LoginSearchParams } from "@/models/auth";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import CodeSubmit from "./code-submit";
+import { login } from "@/actions/login";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 interface LoginFormProps {
   searchParams: LoginSearchParams;
 }
 
 const schema = z.object({
-  code: z.string().length(4, "Введите код"),
+  code: z.string().length(6, "Введите код"),
 });
 
 const LoginForm: FC<LoginFormProps> = (props) => {
   const { searchParams } = props;
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof schema>>({
     defaultValues: { code: "" },
@@ -35,13 +40,26 @@ const LoginForm: FC<LoginFormProps> = (props) => {
   });
 
   const onSubmit = form.handleSubmit(async (values) => {
-    console.log("values", values);
+    if (!searchParams.phone) return;
+    const payload: LoginPayload = {
+      username: searchParams.phone,
+      code: values.code,
+    };
+    startTransition(async () => {
+      const res = await login(payload);
+      if (res.status === 200) {
+        router.push("/");
+      } else {
+        const message = res.data?.error_description || "Неизвестная ошибка";
+        form.setError("code", { message });
+      }
+    });
   });
 
   const handleCodeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = e.target.value.trim();
     form.setValue("code", value);
-    if (value.length === 4) e.target.form?.requestSubmit();
+    if (value.length === 6) e.target.form?.requestSubmit();
   };
 
   const handleCodeSubmit = (): void => {
@@ -61,7 +79,10 @@ const LoginForm: FC<LoginFormProps> = (props) => {
           name="code"
           render={({ field, fieldState }) => (
             <FormItem className="mb-1">
-              <FormLabel>Код подтверждения</FormLabel>
+              <FormLabel className="flex">
+                Код подтверждения
+                {isPending && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+              </FormLabel>
               <FormControl>
                 <Input
                   className={cn(
@@ -70,7 +91,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
                   placeholder="Введите код подтверждения"
                   {...field}
                   onChange={handleCodeChange}
-                  maxLength={4}
+                  maxLength={6}
                 />
               </FormControl>
               <FormMessage />
