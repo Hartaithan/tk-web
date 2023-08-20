@@ -4,6 +4,7 @@ import { encodeLoginForm } from "@/lib/form";
 import { baseHeaders } from "@/lib/headers";
 import { Action } from "@/models/action";
 import { LoginPayload } from "@/models/auth";
+import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
@@ -39,7 +40,17 @@ export const login = async (payload: LoginPayload): Promise<Response> => {
     });
     const data = await response.json();
     if (!response.ok) return { status: 400, data };
-    return { status: 200, data };
+    const tokens: SuccessfulResponse = data;
+    cookies().set("access_token", tokens.access_token, {
+      maxAge: tokens.expires_in,
+    });
+    cookies().set("refresh_token", tokens.refresh_token, {
+      maxAge: tokens.expires_in * 2,
+    });
+    cookies().set("id_token", tokens.id_token, {
+      maxAge: tokens.expires_in * 2,
+    });
+    return { status: 200, data: tokens };
   } catch (error) {
     return {
       status: 400,
