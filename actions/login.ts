@@ -7,6 +7,7 @@ import { LoginPayload } from "@/models/auth";
 import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
+const TWO_WEEKS = 60 * 60 * 24 * 14;
 
 interface SuccessfulResponse {
   token_type: string;
@@ -45,10 +46,7 @@ export const login = async (payload: LoginPayload): Promise<Response> => {
       maxAge: tokens.expires_in,
     });
     cookies().set("refresh_token", tokens.refresh_token, {
-      maxAge: tokens.expires_in * 2,
-    });
-    cookies().set("id_token", tokens.id_token, {
-      maxAge: tokens.expires_in * 2,
+      maxAge: TWO_WEEKS,
     });
     return { status: 200, data: tokens };
   } catch (error) {
