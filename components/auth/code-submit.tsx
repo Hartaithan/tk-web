@@ -1,4 +1,10 @@
-import { FC, MouseEventHandler, useEffect } from "react";
+import {
+  ForwardRefRenderFunction,
+  MouseEventHandler,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+} from "react";
 import { Button, ButtonProps } from "../ui/button";
 import { useCountdown } from "usehooks-ts";
 
@@ -6,12 +12,24 @@ interface CodeSubmitProps extends ButtonProps {
   onCodeSubmit: MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
-const CodeSubmit: FC<CodeSubmitProps> = (props) => {
+export interface CodeSubmitHandle {
+  reset: () => void;
+}
+
+const CodeSubmit: ForwardRefRenderFunction<
+  CodeSubmitHandle,
+  CodeSubmitProps
+> = (props, ref) => {
   const { onCodeSubmit, ...rest } = props;
-  const [count, { startCountdown, stopCountdown }] = useCountdown({
-    countStart: 30,
-    intervalMs: 1000,
-  });
+  const [count, { startCountdown, stopCountdown, resetCountdown }] =
+    useCountdown({
+      countStart: 30,
+      intervalMs: 1000,
+    });
+
+  useImperativeHandle(ref, () => ({
+    reset: () => resetCountdown(),
+  }));
 
   useEffect(() => {
     startCountdown();
@@ -32,4 +50,4 @@ const CodeSubmit: FC<CodeSubmitProps> = (props) => {
   );
 };
 
-export default CodeSubmit;
+export default forwardRef(CodeSubmit);
