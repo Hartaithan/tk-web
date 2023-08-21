@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEventHandler, FC, useTransition } from "react";
+import { ChangeEventHandler, FC, useRef, useTransition } from "react";
 import {
   Form,
   FormControl,
@@ -9,16 +9,21 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { LoginPayload, LoginSearchParams } from "@/models/auth";
+import {
+  LoginPayload,
+  LoginSearchParams,
+  RegisterPayload,
+} from "@/models/auth";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
-import CodeSubmit from "./code-submit";
+import CodeSubmit, { CodeSubmitHandle } from "./code-submit";
 import { login } from "@/actions/login";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { register } from "@/actions/register";
 
 interface LoginFormProps {
   searchParams: LoginSearchParams;
@@ -31,6 +36,7 @@ const schema = z.object({
 const LoginForm: FC<LoginFormProps> = (props) => {
   const { searchParams } = props;
   const router = useRouter();
+  const childRef = useRef<CodeSubmitHandle>(null);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof schema>>({
@@ -62,8 +68,18 @@ const LoginForm: FC<LoginFormProps> = (props) => {
     if (value.length === 6) e.target.form?.requestSubmit();
   };
 
-  const handleCodeSubmit = (): void => {
-    console.log("submit code again");
+  const handleCodeSubmit = async () => {
+    const phone = searchParams.phone || "";
+    const payload: RegisterPayload = {
+      national: "+7",
+      phone: "+" + phone.replace(/[^0-9+]/g, ""),
+    };
+    const res = await register(payload);
+    if (res.status === 200 && childRef.current) {
+      childRef.current.reset();
+    } else {
+      form.setError("code", { message: "Не удалось отправить код" });
+    }
   };
 
   return (
