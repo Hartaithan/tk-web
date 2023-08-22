@@ -3,7 +3,7 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"],
-    "no-unused-vars": ["error"]
+    "no-console": ["error", { "allow": ["info", "error"] }]
   },
   "parserOptions": {
     "project": "./tsconfig.json"
