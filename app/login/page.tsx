@@ -1,5 +1,5 @@
 import LoginForm from "@/components/auth/login-form";
-import IconLogo from "@/icons/logo";
+import IconLogo from "@/components/icons/logo";
 import { LoginSearchParams } from "@/models/auth";
 import { Page } from "@/models/page";
 

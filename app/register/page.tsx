@@ -1,5 +1,5 @@
 import { FC } from "react";
-import IconLogo from "@/icons/logo";
+import IconLogo from "@/components/icons/logo";
 import RegisterForm from "@/components/auth/register-form";
 
 const RegisterPage: FC = () => {
