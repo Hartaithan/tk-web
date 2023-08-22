@@ -6,3 +6,11 @@ export const baseHeaders = new Headers({
   "Accept-Encoding": "gzip",
   "User-Agent": "okhttp/4.9.3",
 });
+
+export const getAuthHeaders = (token: string | undefined): Headers => {
+  const headers = baseHeaders;
+  if (token) {
+    headers.set("Authorization", "Bearer " + token);
+  }
+  return headers;
+};
