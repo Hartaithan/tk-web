@@ -15,7 +15,7 @@ import {
 } from "../ui/form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/styles";
 import { Input } from "../ui/input";
 import { useIMask } from "react-imask";
 import { RegisterPayload } from "@/models/auth";

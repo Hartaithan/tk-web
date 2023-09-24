@@ -18,7 +18,7 @@ import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/styles";
 import CodeSubmit, { CodeSubmitHandle } from "./code-submit";
 import { login } from "@/actions/login";
 import { useRouter } from "next/navigation";
