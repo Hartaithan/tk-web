@@ -1,4 +1,5 @@
 import { formatDate } from "@/lib/date";
+import { cn } from "@/lib/styles";
 import { Card as CardItem } from "@/models/card";
 import Image from "next/image";
 import { FC } from "react";
@@ -9,9 +10,14 @@ interface Props {
 
 const Card: FC<Props> = (props) => {
   const { card } = props;
+  const isKJY = card.cardTypeId === 9;
 
   return (
-    <div className="h-48 aspect-[1000/631] rounded-[12px] overflow-hidden relative p-4 flex text-white">
+    <div
+      className={cn(
+        "h-48 aspect-[1000/631] rounded-[12px] overflow-hidden relative p-4 flex text-white",
+        isKJY && "bg-gradient-to-b from-black/90 to-black/15",
+      )}>
       <div id="left" className="flex flex-col flex-1">
         <h1 className="text-sm font-bold mb-4">
           {card?.name ?? "Название не найдено"}
