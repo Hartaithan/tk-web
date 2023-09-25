@@ -4,6 +4,9 @@ import { Card as CardItem } from "@/models/card";
 import useEmblaCarousel from "embla-carousel-react";
 import { FC } from "react";
 import Card from "./Card";
+import { buttonVariants } from "../ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/styles";
 
 interface CarouselProps {
   cards: CardItem[];
@@ -17,8 +20,13 @@ const CardSlide: FC<CardProps> = (props) => {
   const { card } = props;
 
   return (
-    <div className="flex-[0_0_100%] min-w-0 flex justify-center">
+    <div className="flex-[0_0_100%] min-w-0 flex flex-col items-center">
       <Card card={card} />
+      <Link
+        href={`/card/${card.id}`}
+        className={cn("mt-4", buttonVariants({ variant: "outline" }))}>
+        История
+      </Link>
     </div>
   );
 };

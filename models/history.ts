@@ -6,3 +6,7 @@ export interface HistoryOperation {
   type: number;
   checkUrl: string | null;
 }
+
+export interface HistoryPageParams {
+  id: string;
+}
