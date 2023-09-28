@@ -1,4 +1,5 @@
 import { getCardHistory } from "@/actions/history";
+import DynamicHeader from "@/components/layout/dynamic-header";
 import { HistoryPageParams } from "@/models/history";
 import { Page } from "@/models/page";
 
@@ -9,6 +10,7 @@ const CardHistory: Page<HistoryPageParams> = async (props) => {
 
   return (
     <main className="flex flex-col">
+      <DynamicHeader title="История" back />
       <div id="content" className="flex flex-1 flex-col py-6">
         {history.status === 200 ? (
           <pre>{JSON.stringify(history.data, null, 2)}</pre>
