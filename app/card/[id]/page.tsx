@@ -1,5 +1,14 @@
 import { getCardHistory } from "@/actions/history";
 import DynamicHeader from "@/components/layout/dynamic-header";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+import { formatFullDate } from "@/lib/date";
 import { HistoryPageParams } from "@/models/history";
 import { Page } from "@/models/page";
 
@@ -11,9 +20,38 @@ const CardHistory: Page<HistoryPageParams> = async (props) => {
   return (
     <main className="flex flex-col">
       <DynamicHeader title="История" back />
-      <div id="content" className="flex flex-1 flex-col py-6">
+      <div
+        id="content"
+        className="flex flex-1 flex-col py-6 justify-center items-center">
         {history.status === 200 ? (
-          <pre>{JSON.stringify(history.data, null, 2)}</pre>
+          <div className="w-full max-w-screen-lg">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Маршрут</TableHead>
+                  <TableHead className="w-[200px]">Номер автобуса</TableHead>
+                  <TableHead>Дата оплаты</TableHead>
+                  <TableHead className="text-right">Сумма</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {history.data.map((item) => (
+                  <TableRow key={item.date}>
+                    <TableCell className="font-medium">
+                      №{item.routeNumber}
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {item.carNumber}
+                    </TableCell>
+                    <TableCell>{formatFullDate(item.date)}</TableCell>
+                    <TableCell className="text-right text-lg font-bold">
+                      {item.sum}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         ) : (
           <h2 className="text-2xl font-bold">Что-то пошло не так :(</h2>
         )}
