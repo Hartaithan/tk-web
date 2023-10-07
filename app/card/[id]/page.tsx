@@ -7,6 +7,7 @@ import {
   TableHead,
   TableBody,
   TableCell,
+  TableCaption,
 } from "@/components/ui/table";
 import { formatFullDate } from "@/lib/date";
 import { HistoryPageParams } from "@/models/history";
@@ -20,12 +21,15 @@ const CardHistory: Page<HistoryPageParams> = async (props) => {
   return (
     <main className="flex flex-col">
       <DynamicHeader title="История" back />
-      <div
-        id="content"
-        className="flex flex-1 flex-col py-6 justify-center items-center">
+      <div id="content" className="flex flex-1 flex-col py-6 items-center">
         {history.status === 200 ? (
           <div className="w-full max-w-screen-lg">
             <Table>
+              {history.data.length === 0 && (
+                <TableCaption className="text-lg font-bold">
+                  История пуста
+                </TableCaption>
+              )}
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[100px]">Маршрут</TableHead>
