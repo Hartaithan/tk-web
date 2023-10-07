@@ -2,14 +2,13 @@ import { getCardHistory } from "@/actions/history";
 import DynamicHeader from "@/components/layout/dynamic-header";
 import {
   Table,
-  TableHeader,
   TableRow,
-  TableHead,
   TableBody,
   TableCell,
   TableCaption,
 } from "@/components/ui/table";
 import { formatFullDate } from "@/lib/date";
+import { cn } from "@/lib/styles";
 import { HistoryPageParams } from "@/models/history";
 import { Page } from "@/models/page";
 
@@ -30,29 +29,47 @@ const CardHistory: Page<HistoryPageParams> = async (props) => {
                   История пуста
                 </TableCaption>
               )}
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[100px]">Маршрут</TableHead>
-                  <TableHead className="w-[200px]">Номер автобуса</TableHead>
-                  <TableHead>Дата оплаты</TableHead>
-                  <TableHead className="text-right">Сумма</TableHead>
-                </TableRow>
-              </TableHeader>
               <TableBody>
-                {history.data.map((item) => (
-                  <TableRow key={item.date}>
-                    <TableCell className="font-medium">
-                      №{item.routeNumber}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {item.carNumber}
-                    </TableCell>
-                    <TableCell>{formatFullDate(item.date)}</TableCell>
-                    <TableCell className="text-right text-lg font-bold">
-                      {item.sum}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {history.data.map((item) => {
+                  const isReplenishment = item.type === 1;
+                  return (
+                    <TableRow key={item.date}>
+                      <TableCell className="p-2">
+                        <p
+                          className={cn(
+                            "font-bold mb-1",
+                            isReplenishment && "text-primary",
+                          )}>
+                          {isReplenishment
+                            ? "Пополнение"
+                            : "Маршрут №" + item.routeNumber}
+                        </p>
+                        <p>{formatFullDate(item.date)}</p>
+                      </TableCell>
+                      <TableCell className="p-2">
+                        {!isReplenishment && (
+                          <>
+                            <p
+                              className={cn(
+                                "font-bold mb-1",
+                                isReplenishment && "text-primary",
+                              )}>
+                              {item.carNumber}
+                            </p>
+                            <p>номер автобуса</p>
+                          </>
+                        )}
+                      </TableCell>
+                      <TableCell
+                        className={cn(
+                          "text-right text-2xl font-bold",
+                          isReplenishment && "text-primary",
+                        )}>
+                        {isReplenishment ? "+" + item.sum : item.sum}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
