@@ -16,7 +16,7 @@ const Card: FC<Props> = (props) => {
     <div
       className={cn(
         "h-48 aspect-[1000/631] rounded-[12px] overflow-hidden relative p-4 flex text-white",
-        isKJY && "bg-gradient-to-b from-black/90 to-black/15",
+        isKJY && "bg-gradient-to-b from-black/75 to-black/15",
       )}>
       <div id="left" className="flex flex-col flex-1">
         <h1 className="text-sm font-bold mb-4">
