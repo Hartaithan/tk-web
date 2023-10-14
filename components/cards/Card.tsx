@@ -37,7 +37,7 @@ const Card: FC<Props> = (props) => {
         <h1 className="text-sm">рублей</h1>
       </div>
       <Image
-        className="-z-10"
+        className="-z-10 bg-primary"
         fill
         src={card.imageUrl}
         alt="card background image"
