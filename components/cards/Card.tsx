@@ -19,9 +19,7 @@ const Card: FC<Props> = (props) => {
         isKJY && "bg-gradient-to-b from-black/75 to-black/15",
       )}>
       <div id="left" className="flex flex-col flex-1">
-        <h1 className="text-sm font-bold mb-4">
-          {card?.name ?? "Название не найдено"}
-        </h1>
+        <h1 className="text-sm font-bold mb-4">{card?.name ?? "‌‌"}</h1>
         <p className="text-xs mb-2">
           {card?.cardTypeName ?? "Тип карты не найден"}
         </p>
