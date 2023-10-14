@@ -36,3 +36,8 @@ export interface Card {
   isAvailableReplenishment: boolean;
   isAvailableAutoReplenishment: boolean;
 }
+
+export interface AddCardPayload {
+  number: string;
+  typeCode: string;
+}

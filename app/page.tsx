@@ -1,4 +1,4 @@
-import { getCards } from "@/actions/cards";
+import { getCards } from "@/actions/get-cards";
 import { FC } from "react";
 import CardsCarousel from "@/components/cards/CardsCarousel";
 import StaticHeader from "@/components/layout/static-header";
