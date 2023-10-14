@@ -43,6 +43,7 @@ const RegisterForm: FC = () => {
 
   const onSubmit = form.handleSubmit(async (values) => {
     const unmasked = values.phone.replace(/[^0-9+]/g, "");
+    const encoded = encodeURIComponent(unmasked);
     const payload: RegisterPayload = {
       national: "+7",
       phone: unmasked,
@@ -50,7 +51,7 @@ const RegisterForm: FC = () => {
     startTransition(async () => {
       const res = await register(payload);
       if (res.status === 200) {
-        router.push("/login?phone=" + unmasked);
+        router.push("/login?phone=" + encoded);
       } else {
         const message = res.data?.message || "Неизвестная ошибка";
         form.setError("phone", { message });

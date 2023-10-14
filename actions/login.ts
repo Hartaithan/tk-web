@@ -1,6 +1,5 @@
 "use server";
 
-import { encodeLoginForm } from "@/lib/form";
 import { baseHeaders } from "@/lib/headers";
 import { Action } from "@/models/action";
 import { LoginPayload } from "@/models/auth";
@@ -25,9 +24,22 @@ interface FailedResponse {
 
 type Response = Action<200, SuccessfulResponse> | Action<400, FailedResponse>;
 
+export const generateForm = (object: Object): URLSearchParams => {
+  const form = new URLSearchParams();
+  const fields = Object.entries(object);
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i];
+    form.append(field[0], field[1]);
+  }
+  form.append("grant_type", "phone");
+  form.append("resource", "TransportCard");
+  form.append("scope", "openid profile roles offline_access");
+  return form;
+};
+
 export const login = async (payload: LoginPayload): Promise<Response> => {
   try {
-    const encoded = encodeLoginForm(payload);
+    const encoded = generateForm(payload);
     const response = await fetch(`${API_URL}/auth/Account/login`, {
       method: "POST",
       body: encoded,

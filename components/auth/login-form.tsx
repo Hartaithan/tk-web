@@ -47,8 +47,9 @@ const LoginForm: FC<LoginFormProps> = (props) => {
 
   const onSubmit = form.handleSubmit(async (values) => {
     if (!searchParams.phone) return;
+    const decoded = decodeURIComponent(searchParams.phone);
     const payload: LoginPayload = {
-      username: searchParams.phone,
+      username: decoded,
       code: values.code,
     };
     startTransition(async () => {
