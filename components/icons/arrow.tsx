@@ -1,7 +1,7 @@
 import { IconProps } from "@/models/icon";
 import { FC } from "react";
 
-const ArrowIcon: FC<IconProps> = ({
+const IconArrow: FC<IconProps> = ({
   width = 24,
   height = 24,
   color = "#000000",
@@ -21,4 +21,4 @@ const ArrowIcon: FC<IconProps> = ({
   );
 };
 
-export default ArrowIcon;
+export default IconArrow;
