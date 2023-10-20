@@ -1,5 +1,5 @@
 import { getCardHistory } from "@/actions/history";
-import DynamicHeader from "@/components/layout/dynamic-header";
+import Header from "@/components/layout/header";
 import {
   Table,
   TableRow,
@@ -19,7 +19,7 @@ const CardHistory: Page<HistoryPageParams> = async (props) => {
 
   return (
     <main className="flex flex-col">
-      <DynamicHeader title="История" back />
+      <Header title="История" back />
       <div id="content" className="flex flex-1 flex-col py-6 items-center">
         {history.status === 200 ? (
           <div className="w-full max-w-screen-lg">

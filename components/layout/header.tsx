@@ -6,7 +6,7 @@ import { FC } from "react";
 import ArrowIcon from "../icons/arrow";
 import { Button } from "../ui/button";
 
-const DynamicHeader: FC<HeaderProps> = (props) => {
+const Header: FC<HeaderProps> = (props) => {
   const { title, back = false } = props;
   const router = useRouter();
 
@@ -30,4 +30,4 @@ const DynamicHeader: FC<HeaderProps> = (props) => {
   );
 };
 
-export default DynamicHeader;
+export default Header;

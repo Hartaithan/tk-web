@@ -1,14 +1,14 @@
 import { getCards } from "@/actions/get-cards";
 import { FC } from "react";
 import CardsCarousel from "@/components/cards/CardsCarousel";
-import StaticHeader from "@/components/layout/static-header";
+import Header from "@/components/layout/header";
 
 const HomePage: FC = async () => {
   const cards = await getCards();
 
   return (
     <main className="flex flex-col">
-      <StaticHeader title="Карты" />
+      <Header title="Карты" />
       <div id="content" className="flex flex-1 flex-col py-6">
         {cards.status === 200 && cards.data.length > 0 && (
           <CardsCarousel cards={cards.data} />
