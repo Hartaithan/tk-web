@@ -2,7 +2,6 @@
 
 import { baseHeaders } from "@/lib/headers";
 import { Action } from "@/models/action";
-import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
@@ -20,9 +19,11 @@ interface FailedResponse {
 
 type Response = Action<200, SuccessfulResponse> | Action<400, FailedResponse>;
 
+export type NullableRefreshResponse = Response | null;
+
 export const generateForm = (token: string): URLSearchParams => {
   const form = new URLSearchParams();
-  form.append("grant_type", "phone");
+  form.append("grant_type", "refresh_token");
   form.append("resource", "TransportCard");
   form.append("scope", "openid profile roles offline_access");
   form.append("refresh_token", token);
@@ -46,9 +47,6 @@ export const refresh = async (token: string): Promise<Response> => {
     const data = await response.json();
     if (!response.ok) return { status: 400, data };
     const tokens: SuccessfulResponse = data;
-    cookies().set("access_token", tokens.access_token, {
-      maxAge: tokens.expires_in,
-    });
     return { status: 200, data: tokens };
   } catch (error) {
     return {
