@@ -1,9 +1,9 @@
 "use server";
 
+import { getRefreshedParsedCookies } from "@/lib/cookies";
 import { getAuthHeaders } from "@/lib/headers";
 import { Action } from "@/models/action";
 import { HistoryOperation } from "@/models/history";
-import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL as string;
 
@@ -19,10 +19,11 @@ export const getCardHistory = async (
   cardId: string | number,
 ): Promise<Response> => {
   try {
-    const token = cookies().get("access_token");
+    const refreshed = getRefreshedParsedCookies();
+    const token = refreshed["access_token"];
     if (!token)
       return { status: 400, data: { message: "Необходимо авторизоваться" } };
-    const headers = getAuthHeaders(token.value);
+    const headers = getAuthHeaders(token);
     const response = await fetch(
       `${API_URL}/rest/my/v2/card/getlastoperations?cardId=${cardId}`,
       {
