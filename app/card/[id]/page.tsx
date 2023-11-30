@@ -74,7 +74,9 @@ const CardHistory: Page<HistoryPageParams> = async (props) => {
             </Table>
           </div>
         ) : (
-          <h2 className="text-2xl font-bold">Что-то пошло не так :(</h2>
+          <h2 className="text-2xl font-bold text-center">
+            Что-то пошло не так :(
+          </h2>
         )}
       </div>
     </main>

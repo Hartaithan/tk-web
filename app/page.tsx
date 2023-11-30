@@ -19,7 +19,9 @@ const HomePage: FC = async () => {
           </h2>
         )}
         {cards.status !== 200 && (
-          <h2 className="text-md font-bold">Что-то пошло не так :(</h2>
+          <h2 className="text-md font-bold text-center">
+            Что-то пошло не так :(
+          </h2>
         )}
       </div>
     </main>
