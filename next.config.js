@@ -1,6 +1,15 @@
 const nextConfig = {
   images: {
-    domains: ["tk.albank.ru"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.albank.ru",
+      },
+      {
+        protocol: "http",
+        hostname: "*.albank.ru",
+      },
+    ],
   },
 };
 
